@@ -1,0 +1,68 @@
+create database RevShop;
+use RevShop;
+create table Users(
+id BIGINT primary KEY auto_increment,
+first_name varchar(30),
+last_name varchar(50),
+email varchar(20) unique,
+password varchar(10),
+business_details varchar(100));
+
+create table categories(
+id int primary key,
+name varchar(150));
+
+create table Product(
+id INT primary key auto_increment,
+pname varchar(20),
+description varchar(150),
+price decimal(10,2),
+discounted_price decimal(10,2),
+image_url  varchar(120),
+category_id INT ,
+foreign key (category_id) references categories(id));
+
+create table Orderplaced (
+id int  primary key auto_increment,
+user_id BIGINT ,
+order_date datetime,
+status varchar(255),
+total_amount decimal(10,2),
+shipping_address varchar(200),
+billing_address varchar(200),
+foreign key (user_id) references Users(id));
+
+create table orderitems(
+id int primary key auto_increment,
+order_id int,
+product_id int,
+quantity int,
+price decimal(10,2),
+foreign key(order_id) references Orderplaced(id),
+ foreign key (product_id) references Product(id));
+ 
+ create table reviews(
+ id int auto_increment primary key ,
+ user_id bigint ,
+ product_id int,
+ rating int,
+ comment varchar(500),
+ review_date datetime,
+ foreign key (user_id) references Users(id),
+foreign key (product_id) references Product(id)); 
+
+create table Favorites(
+id int auto_increment primary key,
+user_id bigint,
+product_id int,
+foreign key (user_id) references Users(id),
+foreign key (product_id) references Product(id));
+
+create table payments(
+id int primary key auto_increment,
+order_id int ,
+payment_date datetime,
+payment_method varchar(10),
+amount decimal(10,2),
+foreign key (order_id) references Orderplaced(id));
+ 
